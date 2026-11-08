@@ -1,0 +1,461 @@
+{
+  "serialSchedule": [
+    {
+      "group": "任务 4",
+      "name": "001-95-蝗灾饥荒年__鼠爷报恩_60集_AI短剧-第001集.mp4",
+      "startedAt": 1792423364370,
+      "finishedAt": 1792423626198,
+      "status": "completed",
+      "progress": 100
+    },
+    {
+      "group": "任务 5",
+      "name": "001-002-76-离婚后_我重回影坛巅峰_80集_AI短剧-第002集.mp4",
+      "startedAt": 1792423633893,
+      "finishedAt": 1792423897727,
+      "status": "completed",
+      "progress": 100
+    },
+    {
+      "group": "任务 6",
+      "name": "001-58-荒年_我有个极品二嫂之锦鲤农女逆袭了_100集_-第001集.mp4",
+      "startedAt": 1792423907677,
+      "finishedAt": 1792424149915,
+      "status": "completed",
+      "progress": 100
+    },
+    {
+      "group": "任务 4",
+      "name": "002-95-蝗灾饥荒年__鼠爷报恩_60集_AI短剧-第002集.mp4",
+      "startedAt": 1792424157804,
+      "finishedAt": 1792424313930,
+      "status": "completed",
+      "progress": 100
+    },
+    {
+      "group": "任务 5",
+      "name": "001-76-离婚后_我重回影坛巅峰_80集_AI短剧-第001集.mp4",
+      "startedAt": 1792424318796,
+      "finishedAt": 1792424586496,
+      "status": "completed",
+      "progress": 100
+    },
+    {
+      "group": "任务 6",
+      "name": "002-58-荒年_我有个极品二嫂之锦鲤农女逆袭了_100集_-第002集.mp4",
+      "startedAt": 1792424594848,
+      "finishedAt": 1792424832729,
+      "status": "completed",
+      "progress": 100
+    },
+    {
+      "group": "任务 5",
+      "name": "003-76-离婚后_我重回影坛巅峰_80集_AI短剧-第003集.mp4",
+      "startedAt": 1792424840722,
+      "finishedAt": null,
+      "status": "processing",
+      "progress": 60
+    }
+  ],
+  "version": "1.0.8",
+  "groups": [
+    {
+      "name": "任务 4",
+      "input": "/Volumes/ziliao/短剧/95-蝗灾饥荒年_ 鼠爷报恩（60集）AI短剧/未命名檔案夾",
+      "output": "/Volumes/ziliao/短剧/95-蝗灾饥荒年_ 鼠爷报恩（60集）AI短剧/1",
+      "counts": {
+        "completed": 2
+      },
+      "saved": [
+        {
+          "name": "001-95-蝗灾饥荒年__鼠爷报恩_60集_AI短剧-第001集.mp4",
+          "sourceExists": true,
+          "sourceSizeUnchanged": true,
+          "sourceMtimeUnchanged": true,
+          "routedCorrectly": true,
+          "durationDelta": 0.0,
+          "source": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "codec_type": "video",
+                "width": 736,
+                "height": 1296,
+                "avg_frame_rate": "30/1"
+              },
+              {
+                "codec_name": "aac",
+                "codec_type": "audio",
+                "avg_frame_rate": "0/0"
+              }
+            ],
+            "format": {
+              "duration": "3000.034000",
+              "size": "632772825"
+            }
+          },
+          "output": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "codec_type": "video",
+                "width": 736,
+                "height": 1296,
+                "avg_frame_rate": "30/1"
+              },
+              {
+                "codec_name": "aac",
+                "codec_type": "audio",
+                "avg_frame_rate": "0/0"
+              }
+            ],
+            "format": {
+              "duration": "3000.034000",
+              "size": "677365057"
+            }
+          },
+          "audioFirstPacketsEqual": true,
+          "tailFrameDecodes": true,
+          "temporaryOutputsRemoved": true,
+          "workRemoved": true,
+          "startedAt": 1792423364370,
+          "finishedAt": 1792423626198,
+          "blackLineSample": {
+            "opacity": 0.3,
+            "lineMedianRatio": 0.6608695652173913,
+            "outsideMeanDifference": 2.6964599548079335,
+            "sampleTime": 25
+          }
+        },
+        {
+          "name": "002-95-蝗灾饥荒年__鼠爷报恩_60集_AI短剧-第002集.mp4",
+          "sourceExists": true,
+          "sourceSizeUnchanged": true,
+          "sourceMtimeUnchanged": true,
+          "routedCorrectly": true,
+          "durationDelta": 0.0,
+          "source": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "codec_type": "video",
+                "width": 736,
+                "height": 1296,
+                "avg_frame_rate": "30/1"
+              },
+              {
+                "codec_name": "aac",
+                "codec_type": "audio",
+                "avg_frame_rate": "0/0"
+              }
+            ],
+            "format": {
+              "duration": "1742.601000",
+              "size": "397194426"
+            }
+          },
+          "output": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "codec_type": "video",
+                "width": 736,
+                "height": 1296,
+                "avg_frame_rate": "30/1"
+              },
+              {
+                "codec_name": "aac",
+                "codec_type": "audio",
+                "avg_frame_rate": "0/0"
+              }
+            ],
+            "format": {
+              "duration": "1742.601000",
+              "size": "422161915"
+            }
+          },
+          "audioFirstPacketsEqual": true,
+          "tailFrameDecodes": true,
+          "temporaryOutputsRemoved": true,
+          "workRemoved": true,
+          "startedAt": 1792424157804,
+          "finishedAt": 1792424313930,
+          "blackLineSample": {
+            "opacity": 0.3,
+            "lineMedianRatio": 0.6883116883116883,
+            "outsideMeanDifference": 1.8802410243535024,
+            "sampleTime": 25
+          }
+        }
+      ]
+    },
+    {
+      "name": "任务 5",
+      "input": "/Volumes/ziliao/短剧/76-离婚后，我重回影坛巅峰（80集）AI短剧/未命名檔案夾",
+      "output": "/Volumes/ziliao/短剧/76-离婚后，我重回影坛巅峰（80集）AI短剧/zonghe ",
+      "counts": {
+        "completed": 2,
+        "queued": 1
+      },
+      "saved": [
+        {
+          "name": "001-002-76-离婚后_我重回影坛巅峰_80集_AI短剧-第002集.mp4",
+          "sourceExists": true,
+          "sourceSizeUnchanged": true,
+          "sourceMtimeUnchanged": true,
+          "routedCorrectly": true,
+          "durationDelta": 0.0,
+          "source": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "codec_type": "video",
+                "width": 752,
+                "height": 1312,
+                "avg_frame_rate": "30/1"
+              },
+              {
+                "codec_name": "aac",
+                "codec_type": "audio",
+                "avg_frame_rate": "0/0"
+              }
+            ],
+            "format": {
+              "duration": "3000.010000",
+              "size": "753736746"
+            }
+          },
+          "output": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "codec_type": "video",
+                "width": 752,
+                "height": 1312,
+                "avg_frame_rate": "30/1"
+              },
+              {
+                "codec_name": "aac",
+                "codec_type": "audio",
+                "avg_frame_rate": "0/0"
+              }
+            ],
+            "format": {
+              "duration": "3000.010000",
+              "size": "724769879"
+            }
+          },
+          "audioFirstPacketsEqual": true,
+          "tailFrameDecodes": true,
+          "temporaryOutputsRemoved": true,
+          "workRemoved": true,
+          "startedAt": 1792423633893,
+          "finishedAt": 1792423897727,
+          "blackLineSample": {
+            "opacity": 0.3,
+            "lineMedianRatio": 0.6923076923076923,
+            "outsideMeanDifference": 0.9070567986230637,
+            "sampleTime": 25
+          }
+        },
+        {
+          "name": "001-76-离婚后_我重回影坛巅峰_80集_AI短剧-第001集.mp4",
+          "sourceExists": true,
+          "sourceSizeUnchanged": true,
+          "sourceMtimeUnchanged": true,
+          "routedCorrectly": true,
+          "durationDelta": 0.0,
+          "source": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "codec_type": "video",
+                "width": 736,
+                "height": 1296,
+                "avg_frame_rate": "30/1"
+              },
+              {
+                "codec_name": "aac",
+                "codec_type": "audio",
+                "avg_frame_rate": "0/0"
+              }
+            ],
+            "format": {
+              "duration": "3000.422000",
+              "size": "639319322"
+            }
+          },
+          "output": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "codec_type": "video",
+                "width": 736,
+                "height": 1296,
+                "avg_frame_rate": "30/1"
+              },
+              {
+                "codec_name": "aac",
+                "codec_type": "audio",
+                "avg_frame_rate": "0/0"
+              }
+            ],
+            "format": {
+              "duration": "3000.422000",
+              "size": "683325549"
+            }
+          },
+          "audioFirstPacketsEqual": true,
+          "tailFrameDecodes": true,
+          "temporaryOutputsRemoved": true,
+          "workRemoved": true,
+          "startedAt": 1792424318796,
+          "finishedAt": 1792424586496,
+          "blackLineSample": {
+            "opacity": 0.3,
+            "lineMedianRatio": null,
+            "outsideMeanDifference": 0,
+            "sampleTime": 25
+          }
+        }
+      ]
+    },
+    {
+      "name": "任务 6",
+      "input": "/Volumes/ziliao/短剧/58-荒年：我有个极品二嫂之锦鲤农女逆袭了（100集）/未命名檔案夾",
+      "output": "/Volumes/ziliao/短剧/58-荒年：我有个极品二嫂之锦鲤农女逆袭了（100集）/1",
+      "counts": {
+        "completed": 2,
+        "waiting": 1
+      },
+      "saved": [
+        {
+          "name": "001-58-荒年_我有个极品二嫂之锦鲤农女逆袭了_100集_-第001集.mp4",
+          "sourceExists": true,
+          "sourceSizeUnchanged": true,
+          "sourceMtimeUnchanged": true,
+          "routedCorrectly": true,
+          "durationDelta": 0.0,
+          "source": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "codec_type": "video",
+                "width": 736,
+                "height": 1296,
+                "avg_frame_rate": "25/1"
+              },
+              {
+                "codec_name": "aac",
+                "codec_type": "audio",
+                "avg_frame_rate": "0/0"
+              }
+            ],
+            "format": {
+              "duration": "3000.040000",
+              "size": "613393550"
+            }
+          },
+          "output": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "codec_type": "video",
+                "width": 736,
+                "height": 1296,
+                "avg_frame_rate": "25/1"
+              },
+              {
+                "codec_name": "aac",
+                "codec_type": "audio",
+                "avg_frame_rate": "0/0"
+              }
+            ],
+            "format": {
+              "duration": "3000.040000",
+              "size": "656186586"
+            }
+          },
+          "audioFirstPacketsEqual": true,
+          "tailFrameDecodes": true,
+          "temporaryOutputsRemoved": true,
+          "workRemoved": true,
+          "startedAt": 1792423907677,
+          "finishedAt": 1792424149915,
+          "blackLineSample": {
+            "opacity": 0.3,
+            "lineMedianRatio": 0.6363636363636364,
+            "outsideMeanDifference": 1.727257511088794,
+            "sampleTime": 25
+          }
+        },
+        {
+          "name": "002-58-荒年_我有个极品二嫂之锦鲤农女逆袭了_100集_-第002集.mp4",
+          "sourceExists": true,
+          "sourceSizeUnchanged": true,
+          "sourceMtimeUnchanged": true,
+          "routedCorrectly": true,
+          "durationDelta": 0.0,
+          "source": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "codec_type": "video",
+                "width": 736,
+                "height": 1296,
+                "avg_frame_rate": "25/1"
+              },
+              {
+                "codec_name": "aac",
+                "codec_type": "audio",
+                "avg_frame_rate": "0/0"
+              }
+            ],
+            "format": {
+              "duration": "3000.040000",
+              "size": "589593549"
+            }
+          },
+          "output": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "codec_type": "video",
+                "width": 736,
+                "height": 1296,
+                "avg_frame_rate": "25/1"
+              },
+              {
+                "codec_name": "aac",
+                "codec_type": "audio",
+                "avg_frame_rate": "0/0"
+              }
+            ],
+            "format": {
+              "duration": "3000.040000",
+              "size": "623389303"
+            }
+          },
+          "audioFirstPacketsEqual": true,
+          "tailFrameDecodes": true,
+          "temporaryOutputsRemoved": true,
+          "workRemoved": true,
+          "startedAt": 1792424594848,
+          "finishedAt": 1792424832729
+        }
+      ]
+    }
+  ]
+}

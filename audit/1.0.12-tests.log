@@ -1,0 +1,28 @@
+✔ real automatic folder processing: stable files, next video after failure, safe export, stop, restart and no duplicate work (2489.402209ms)
+✔ multiple folder pairs independently route real videos, stop separately and survive relaunch (1611.137833ms)
+✔ automatic complete merge applies compression, episode merge splits at 50 minutes, and redo preserves existing outputs (1202.1495ms)
+✔ native merge handles a noncanonical macOS data root and quoted source paths while applying effects and compression (517.7985ms)
+✔ default auto-stop waits for all sources and final save, persists completion, and requires an explicit restart for new arrivals (204.820458ms)
+✔ empty folders stop after the stability window but zero-byte copying placeholders keep the session open (256.189625ms)
+✔ failed sources do not prevent successful sources finishing; the stopped result explicitly retains failures (96.886375ms)
+✔ independent folder pairs route correctly and share one fair serial scheduler (422.6065ms)
+✔ all group outputs are excluded from monitoring and overlapping output parents are rejected (393.262083ms)
+✔ legacy single-pair configuration and completion records migrate without starting automatically (4.728041ms)
+✔ a merge group waiting for a new file to stabilize does not block another ready group (92.614583ms)
+✔ names and merge output names follow source folders; each group stops independently by default (104.708041ms)
+✔ folder selection immediately unlocks Add Task and all groups receive the selected merge and compression options (5.651416ms)
+✔ Start All reports missing directories and a single card guides selection then starts (1.981209ms)
+✔ card start cancellation and server rejection both show the actual error (1.213208ms)
+✔ card title follows the chosen source and completed sessions show stopped rather than monitoring (1.243292ms)
+✔ fresh quit state distinguishes completed tasks, continuous monitoring, pending files and real processing (2.825125ms)
+✔ desktop auth, local import, direct source, fast remux, collision-safe export and cleanup (419.616417ms)
+✔ output folders use the source video name and keep merged episodes together (0.603084ms)
+✔ create and reuse output folder; reject file or symlink conflicts without touching their contents (5.849041ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8113.146458

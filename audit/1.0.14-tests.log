@@ -1,0 +1,42 @@
+✔ save merged output to the source parent without old directory blocks or reprocessing the generated file (3502.797833ms)
+✔ real automatic folder processing: stable files, next video after failure, safe export, stop, restart and no duplicate work (2508.375167ms)
+✔ multiple folder pairs independently route real videos, stop separately and survive relaunch (1574.418375ms)
+✔ automatic complete merge applies compression, episode merge splits at 50 minutes, and redo preserves existing outputs (1188.358459ms)
+✔ native merge handles a noncanonical macOS data root and quoted source paths while applying effects and compression (523.231625ms)
+✔ default auto-stop waits for all sources and final save, persists completion, and requires an explicit restart for new arrivals (204.858541ms)
+✔ empty folders stop after the stability window but zero-byte copying placeholders keep the session open (257.546708ms)
+✔ failed sources do not prevent successful sources finishing; the stopped result explicitly retains failures (97.172042ms)
+✔ independent folder pairs route correctly and share one fair serial scheduler (426.871583ms)
+✔ parent paths and historical output roots are allowed; only identical pair directories are rejected (6.423333ms)
+✔ generated files are skipped across groups, removal and restart; unrelated videos remain readable (477.652833ms)
+✔ legacy single-pair configuration and completion records migrate without starting automatically (3.172083ms)
+✔ a merge group waiting for a new file to stabilize does not block another ready group (87.766791ms)
+✔ names and merge output names follow source folders; each group stops independently by default (112.901583ms)
+✔ merge waits for every observed file, sorts naturally, saves one output, and only batches new arrivals after restart (356.1175ms)
+✔ a changed member discards the merged result and retries the entire batch after stability (177.034875ms)
+✔ partial export failure resumes remaining merged parts without encoding or exporting the first part again; redo archives history (178.919208ms)
+✔ empty copying placeholders hold a merge until they contain stable video bytes (167.554959ms)
+✔ transition helper is excluded from main inputs and a merge waits for at least two main videos (167.989834ms)
+✔ folder selection immediately unlocks Add Task and all groups receive the selected merge and compression options (6.3595ms)
+✔ Start All reports missing directories and a single card guides selection then starts (1.67725ms)
+✔ card start cancellation and server rejection both show the actual error (1.195833ms)
+✔ card title follows the chosen source and completed sessions show stopped rather than monitoring (1.234167ms)
+✔ auto queue waits for stability, serializes jobs, finishes current on stop and remembers successes (428.618084ms)
+✔ save failure stops intake and retries the existing output without encoding again (104.95975ms)
+✔ folder validation, merge validation and concurrent start protection (3.067458ms)
+✔ source changed during encoding is not exported and is queued again after stabilizing (128.01925ms)
+✔ restart after export acknowledgement remembers success even if history was not committed yet (4.946208ms)
+✔ recursive scan ignores hidden files, symlinks and empty files while allowing original videos in output folders; sorts episode numbers naturally (95.722417ms)
+✔ a disconnected watch directory reports an error, stops intake and resumes after restoration (3.24025ms)
+✔ fresh quit state distinguishes completed tasks, continuous monitoring, pending files and real processing (2.83325ms)
+✔ desktop auth, local import, direct source, fast remux, collision-safe export and cleanup (414.472375ms)
+✔ output folders use the source video name and keep merged episodes together (0.620459ms)
+✔ create and reuse output folder; reject file or symlink conflicts without touching their contents (5.911167ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 13632.103333

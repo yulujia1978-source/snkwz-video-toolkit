@@ -1,0 +1,15 @@
+✔ auto queue waits for stability, serializes jobs, finishes current on stop and remembers successes (431.358ms)
+✔ save failure stops intake and retries the existing output without encoding again (84.983084ms)
+✔ folder validation, merge validation and concurrent start protection (4.462167ms)
+✔ source changed during encoding is not exported and is queued again after stabilizing (127.656334ms)
+✔ restart after export acknowledgement remembers success even if history was not committed yet (1.835125ms)
+✔ recursive scan ignores hidden files, symlinks, empty files and output folders; sorts episode numbers naturally (95.270125ms)
+✔ a disconnected watch directory reports an error, stops intake and resumes after restoration (3.227209ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 793.972792

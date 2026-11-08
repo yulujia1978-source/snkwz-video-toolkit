@@ -1,0 +1,45 @@
+✔ real automatic folder processing: stable files, next video after failure, safe export, stop, restart and no duplicate work (3108.335208ms)
+✔ multiple folder pairs independently route real videos, stop separately and survive relaunch (1684.715292ms)
+✔ independent folder pairs route correctly and share one fair serial scheduler (423.971167ms)
+✔ all group outputs are excluded from monitoring and overlapping output parents are rejected (397.816083ms)
+✔ legacy single-pair configuration and completion records migrate without starting automatically (5.058542ms)
+✔ folder selection immediately unlocks Add Task and all groups start with manual merge options enabled (5.977208ms)
+✔ Start All reports missing directories and a single card guides selection then starts (2.147375ms)
+✔ card start cancellation and server rejection both show the actual error (1.324333ms)
+✔ auto queue waits for stability, serializes jobs, finishes current on stop and remembers successes (429.188542ms)
+✔ save failure stops intake and retries the existing output without encoding again (102.142791ms)
+✔ folder validation, merge validation and concurrent start protection (4.97525ms)
+✔ source changed during encoding is not exported and is queued again after stabilizing (131.267833ms)
+✔ restart after export acknowledgement remembers success even if history was not committed yet (3.241125ms)
+✔ black line remains visible inside black border and after compression/resizing; custom position, thickness and opacity apply (472.537666ms)
+✔ black line rejects invalid geometry and opacity (0.403167ms)
+✔ desktop auth, local import, direct source, fast remux, collision-safe export and cleanup (456.113458ms)
+✔ reject invalid parameters (1.111584ms)
+✔ real batch: combined filters, pip loop, silent input, bad input and duplicate names (550.223083ms)
+✔ pause and cancel stop the process; queued work continues (938.922209ms)
+✔ cleanup protects queued inputs and active downloads; acknowledgements and expiry are idempotent (5.238958ms)
+✔ restart cleans interrupted task uploads and grants legacy outputs a full retention window (1.870041ms)
+✔ direct merge splits at keyframes and numbers episodes without losing frames (401.275709ms)
+✔ failed merge source is not silently skipped (104.734375ms)
+✔ compression reduces a high bitrate video while preserving dimensions and every frame (502.17425ms)
+✔ compression keeps the original container and bytes if encoding grows the file (116.726083ms)
+✔ compression after quick merge preserves variable frame timing and frame count (133.827166ms)
+✔ quick merge copies encoded video and performs vocal separation after filters (938.606916ms)
+✔ unlimited merge outputs one complete video beyond 50 minutes (139.52025ms)
+✔ both merge modes insert the ten-second transition exactly once after the first clip (412.102417ms)
+✔ incompatible sources fail without converting or publishing outputs (78.014084ms)
+✔ both merge modes plus compression accept two-pixel mismatch and apply edits (458.787625ms)
+✔ episode merge compresses mismatched inputs then splits and numbers the complete result (11731.870542ms)
+✔ long vocal separation bounds each Demucs input and preserves duration (8307.8945ms)
+✔ completed manual transfers delete server copies while interrupted transfers retain them (4.6675ms)
+✔ remaining visual features individually change decoded pixels and retain duration/audio (1160.099125ms)
+﹣ installed Demucs performs actual model inference and produces a playable vocal track (0.166334ms) # SKIP
+✔ H.264 and H.265 encode with software and Apple hardware; FPS and resolution apply (1498.8805ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 36
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 35116.536916
