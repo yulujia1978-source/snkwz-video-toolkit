@@ -1,0 +1,36 @@
+{
+  "fixture": "12s, 1080x1920, 30fps, grid+8px border+black lines",
+  "rows": [
+    {
+      "name": "before-cpu",
+      "seconds": 3.009,
+      "width": 1096,
+      "height": 1936,
+      "frames": 360,
+      "duration": 12,
+      "codec": "h264",
+      "bytes": 9504028
+    },
+    {
+      "name": "after-default",
+      "seconds": 2.057,
+      "width": 1096,
+      "height": 1936,
+      "frames": 360,
+      "duration": 12,
+      "codec": "h264",
+      "bytes": 15180461
+    },
+    {
+      "name": "after-software",
+      "seconds": 1.756,
+      "width": 1096,
+      "height": 1936,
+      "frames": 360,
+      "duration": 12,
+      "codec": "h264",
+      "bytes": 8181800
+    }
+  ],
+  "speedup": 1.462809917355372
+}
