@@ -1,0 +1,280 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>视频去重 · Mac</title><style>body{margin:0;background:#f4f7fb;font-family:system-ui;color:#172033}.wrap{max-width:1000px;margin:24px auto;padding:0 16px}.card{background:#fff;border:1px solid #dfe6f0;border-radius:14px;padding:18px;margin:14px 0}.top{display:flex;justify-content:space-between}.drop{border:2px dashed #a9b9d2;border-radius:10px;padding:20px;text-align:center}.drop input{margin:10px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}.option{border:1px solid #e1e7f0;border-radius:8px;padding:10px}.option input[type=number]{width:60px}.actions{display:flex;gap:8px;margin-top:14px}button{border:0;border-radius:8px;padding:10px 14px;background:#2563eb;color:#fff;font-weight:700}button:disabled{opacity:.5}.warn{background:#f59e0b}.secondary{background:#718096}.progress{height:11px;background:#e7edf6;border-radius:8px;overflow:hidden}.progress i{display:block;height:100%;background:#2563eb;width:0}.log{height:170px;overflow:auto;background:#101827;color:#d7e2f2;padding:12px;border-radius:8px;white-space:pre-wrap;font-size:12px}.file{display:flex;justify-content:space-between;padding:6px;background:#f6f8fc;margin-top:5px;font-size:13px}.hint{color:#69788f;font-size:13px}button,a,input,select{font:inherit}button{cursor:pointer}input[type=number]{max-width:85px}select{max-width:100%}.file{gap:12px;align-items:center;overflow-wrap:anywhere}.hint{font-size:14px}.actions{flex-wrap:wrap}.drop.drag{background:#e8f0ff;border-color:#2563eb}a{color:#2563eb}.top{align-items:center;gap:12px}.log{height:200px}@media(max-width:600px){.top h1{font-size:24px}.file{flex-wrap:wrap}.wrap{padding:0 10px}}
+body{background:#eef2f7}.wrap{max-width:1100px;margin:28px auto}.top h1{margin-bottom:4px;letter-spacing:-1px}.top h1 small{font-size:16px;color:#6b7e99;letter-spacing:0}.badge{background:#dce8ff;color:#2354a6;border-radius:20px;padding:8px 14px;font-size:13px}.card{box-shadow:0 5px 22px #24385606}.card h2{font-size:19px}.option{background:#fafcff;padding:14px}.drop{background:#f8fbff;padding:24px}.drop input{cursor:pointer;border:1px solid #ccd9ec;border-radius:8px;padding:10px;color:#254673;background:white}.actions button{min-width:110px}#results button{margin-right:8px}.hint{line-height:1.65}button:disabled{cursor:default}.log{font-family:ui-monospace,monospace}input[type=text]{width:200px}
+.watch-task{margin:14px 0;padding:16px;border:1px solid #d7e2f0;border-radius:12px;background:#fafcff}.watch-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.watch-head h3{margin:0 0 12px}.watch-task summary{cursor:pointer;color:#52647f}.watch-task .file{background:white}
+</style></head><body><main class="wrap"><div class="top"><div><h1>视频去重 <small>Mac</small></h1><p class="hint">本地批量处理 · Apple 硬件加速 · 原视频始终保留</p></div><div style="display:flex;align-items:center;gap:10px"><button id="openAutoQueue" type="button">自动连续处理</button><button id="refreshUI" class="secondary" type="button" title="刷新界面（⌘R），处理期间只更新任务进度">↻ 刷新</button><span class="badge">桌面版 1.0.15</span></div></div><section class="card"><h2>1. 导入视频</h2><div class="drop">选择一个或多个视频<br><input id="filePicker" type="file" accept="video/*" multiple><br>或选择整个文件夹<br><input id="folderPicker" type="file" accept="video/*" webkitdirectory multiple></div><div id="files"></div><hr><div>画中画辅助视频（可选）<input id="pipPicker" type="file" accept="video/*"></div></section><section class="card"><h2>2. 选择处理功能</h2><h3>合并方式（二选一，可搭配下方处理功能）</h3><div class="option"><label><input id="merge" type="checkbox">分集合并（约 50 分钟一集）</label><br><label>输出名称 <input id="mergeName" type="text" maxlength="120" placeholder="例如：我的视频"></label><p class="hint">分集合并会自动命名为“名称-第001集”；完整合并使用“名称.mp4”。</p></div><div class="option"><label><input id="mergeUnlimited" type="checkbox">完整合并（不限时长和容量）</label><p class="hint">按导入顺序合并成一个完整视频，不自动分段；与分集合并二选一。</p></div><div class="option"><label><input id="transition" type="checkbox">插入一个过场视频（仅一次）</label><p class="hint">支持两种合并模式，需至少两个主视频。整批仅在第一个视频后插入一次，其余视频直接衔接。建议上传约 10 秒的过场；保留实际时长和音轨，参数不一致时可勾选视频压缩统一格式，不插入片头或片尾。</p><input id="transitionPicker" type="file" accept="video/*"></div><h3>其他去重功能</h3><div class="grid"><div class="option"><label><input id="grid" type="checkbox">网格叠加</label><br>网格<input id="gridSize" type="number" max="100" min="1" value="5"> 透明度<input id="gridOpacity" type="number" min="0" max="100" value="12">%</div><div class="option"><label><input id="crop" type="checkbox">视频裁剪</label><br>上下共裁剪<input id="cropPct" type="number" min="0" max="49" value="5">%</div><div class="option"><label><input id="color" type="checkbox">智能调色</label><br>对比度<input id="contrast" min="0.1" max="3" type="number" step=".1" value="1.1"> 饱和度<input id="saturation" min="0" max="3" type="number" step=".1" value="1.1"></div><div class="option"><label><input id="sharpen" type="checkbox">智能锐化</label></div><div class="option"><label><input id="border" type="checkbox">智能边框</label><br>边框厚度<input id="borderSize" type="number" min="1" max="200" value="8"> px</div><div class="option"><label><input id="blackLine" type="checkbox">黑线技术</label><br><label>垂直位置 <input id="blackLineY" type="number" min="0" max="100" value="90">%</label><br><label>粗细 <input id="blackLineThickness" type="number" min="1" max="100" value="8"> px</label><br><label>不透明度 <input id="blackLineOpacity" type="number" min="0" max="100" value="100">%</label><p class="hint">0% 顶部 · 50% 中间 · 100% 底部。默认 90%，在画面内靠下，横跨整幅画面；粗细按最终输出像素计算。</p></div><div class="option"><label><input id="pip" type="checkbox">画中画叠加</label><br>透明度<input id="pipOpacity" type="number" min="0" max="100" value="35">%</div></div><div class="card"><h3>输出设置</h3><div class="grid"><label><input id="hardwareAcceleration" type="checkbox" checked>Apple 硬件加速（推荐）</label>
+<label>视频编码 <select id="reencodeEncoder"><option>H.264</option><option>H.265</option></select></label>
+<label>画质 CRF <input id="reencodeCrf" type="number" min="18" max="30" value="22"></label>
+<label>处理速度 <select id="reencodePreset"><option value="veryfast">快速</option><option value="fast" selected>均衡</option><option value="medium">精细压缩</option><option value="slow">慢速压缩</option></select></label>
+<label>帧率 <select id="reencodeFps"><option value="original">保持原始</option><option>24</option><option>25</option><option>30</option><option>50</option><option>60</option></select></label>
+<label><input id="keepAudio" type="checkbox" checked>保留原音轨（兼容时更快）</label>
+<label>音频码率 <select id="reencodeAudio"><option>128k</option><option selected>160k</option><option>192k</option><option>256k</option><option>320k</option></select></label>
+<label>分辨率 <select id="reencodeResolution"><option value="original">保持原始</option><option>3840×2160</option><option>2560×1440</option><option>1920×1080</option><option>1280×720</option><option>1080×1920</option><option>720×1280</option></select></label>
+<label><input id="compress" type="checkbox">视频压缩（保留分辨率、帧率）</label>
+
+
+</div><p class="hint">默认启用 Apple 硬件编码，直接读取本地原视频；兼容的原音轨直接保留。不改变画面且编码兼容时跳过视频重编码。需要调整音频码率时取消“保留原音轨”。画质和文件大小可能与软件编码不同，取消勾选可使用原软件编码。尺寸不兼容时使用高质量临时编码，避免无损临时文件占满磁盘。两种合并均可搭配下方处理功能。未选处理且素材兼容时直接拼接，速度最快。素材尺寸或编码不一致时，请勾选“视频压缩”：统一为首个主视频的尺寸后重新编码，速度会变慢，体积不保证一定减小。顺序为合并、去重或压缩、最后分离人声。分集合并最后按约 50 分钟在关键帧处切分，时长可能略有偏差，下载文件名自动加第001集、第002集等集数；完整合并输出一个文件。过场仅在第一个视频后插入一次。容量取决于可用磁盘空间。</p></div><div class="option"><label><input id="removeMusic" type="checkbox">去背景音乐，保留人声（最后执行）</label><p class="hint">可选：使用本机 Demucs 分离人声。</p></div><div class="actions"><button id="start">开始手动处理</button><button id="pause" class="warn" disabled>暂停</button><button id="cancel" class="secondary" disabled>取消任务</button></div></section><section class="card" id="autoQueuePanel"><h2>3. 自动连续处理 · 多任务</h2><p class="hint">一组监听文件夹 + 一组输出文件夹 = 一个任务。点击“添加任务”继续增加，每组可独立启停，也可全部启动。多组同时监听，批次统一轮流排队处理；选择保存路径后，系统自动建立同名子文件夹：单个视频用视频名，合并任务用监听文件夹名。</p><div class="actions"><button id="autoAddGroup" type="button">＋ 添加任务</button><button id="autoStartAll" type="button">全部启动</button><button id="autoStopAll" type="button" class="warn" disabled>全部停止</button></div><p id="autoStatus" class="hint" role="status">正在读取任务列表…</p><div id="autoGroups"></div><p class="hint">任务名称取自监听文件夹，单独处理保留源文件名；合并成品以监听文件夹命名，分集自动加集数。上方“输出名称”仅用于手动任务。启动时采用其他处理参数，启动后该任务的参数固定。自动任务采用上方合并、压缩及其他勾选。合并模式等待当前文件全部稳定后按文件名排序合并；默认全部处理并保存后自动停止；如需持续接收新增视频，取消“完成后自动停止”，新增文件将另起一批，不追加旧成品。已有完成记录需要重做时，停止后点击“重做全部（保留原成品）”。已有和新增视频稳定后自动入队；监听目录与保存路径只需不是同一目录，上下级目录均可选择；本软件记录过的成品文件自动跳过，其他原视频仍正常扫描。停止会完成当前视频；移除任务不会删除视频或成品。退出后监听停止，重开可从已保存的多组任务继续启动。</p></section><section class="card"><h2>4. 手动任务进度</h2><div id="status" class="hint">尚未创建任务</div><div class="progress"><i id="bar"></i></div><pre id="log" class="log">处理日志将在这里显示…</pre></section><section class="card"><h2>5. 手动处理结果</h2><div id="results" class="hint">选择保存路径后，自动建立同名文件夹保存成品</div></section><footer style="text-align:center;padding:12px 0 24px;color:#64748b;font-size:13px">Developed by SNKWZ</footer></main><script>function videoProgressValue(value){
+ const phase=value.phase;if(phase&&Number.isFinite(phase.progress))return Math.max(0,Math.min(100,phase.progress));
+ return Math.max(0,Math.min(100,Number(value.progress)||0));
+}
+function videoProgressText(value,at=Date.now()){
+ const phase=value.phase;
+ if(phase){
+  const seconds=Math.max(0,Math.floor((at-phase.startedAt)/1000)),minutes=Math.floor(seconds/60);
+  const count=Number.isFinite(phase.total)?` · ${phase.completed}/${phase.total} 段`:'';
+  const percent=Number.isFinite(phase.progress)?`（本阶段 ${phase.progress}%）`:'';
+  const current=phase.code==='vocals'&&phase.currentSegment>phase.completed&&phase.completed<phase.total?` · 正在处理第 ${phase.currentSegment} 段`:'';
+  return `${phase.label}${count}${percent}${current} · 本阶段用时 ${minutes} 分 ${seconds%60} 秒`;
+ }
+ return `${Number(value.progress)||0}%${value.currentFile?' · '+value.currentFile:''}${value.speed?' · '+value.speed.toFixed(1)+' 倍速':''}`;
+}
+</script><script>
+const $=id=>document.getElementById(id), API='/api/admin/video-dedupe', KEY='video-dedupe-settings-v2';
+const terminal=['completed','partial','failed','cancelled'];
+let selected=[],task=null,timer=null,busy=false,request=null,stopped=false,saving=false,saveDir=null;
+const controls=[...document.querySelectorAll('.option input,select,#compress,#merge,#removeMusic,#hardwareAcceleration,#keepAudio,#reencodeCrf')];
+try{const v=JSON.parse(localStorage.getItem(KEY)||'{}');if(v.speedDefaultsVersion!==1){Object.assign(v,{hardwareAcceleration:true,keepAudio:true,reencodePreset:'veryfast',speedDefaultsVersion:1});localStorage.setItem(KEY,JSON.stringify(v));}}catch{}
+try{const v=JSON.parse(localStorage.getItem(KEY)||'{}');controls.forEach(e=>{if(e.type!=='file'&&v[e.id]!==undefined){if(e.type==='checkbox')e.checked=v[e.id];else e.value=v[e.id];}});}catch{}
+if($('mergeUnlimited').checked)$('merge').checked=false;
+controls.forEach(e=>e.addEventListener('change',()=>{if(e.checked&&e.id==='merge')$('mergeUnlimited').checked=false;if(e.checked&&e.id==='mergeUnlimited')$('merge').checked=false;try{localStorage.setItem(KEY,JSON.stringify({...Object.fromEntries(controls.filter(e=>e.type!=='file').map(e=>[e.id,e.type==='checkbox'?e.checked:e.value])),speedDefaultsVersion:1}));}catch{}}));
+function compressionControls(){for(const e of controls){e.disabled=busy;}for(const id of ['reencodeEncoder','reencodeCrf','reencodePreset','reencodeFps','reencodeResolution'])$(id).disabled=busy||$('compress').checked;$('reencodeAudio').disabled=busy||$('keepAudio').checked;$('pipPicker').disabled=busy;}
+$('merge').addEventListener('change',compressionControls);$('mergeUnlimited').addEventListener('change',compressionControls);
+$('keepAudio').addEventListener('change',compressionControls);$('compress').addEventListener('change',compressionControls);compressionControls();
+function status(text){$('status').textContent=text;}
+function lock(value){busy=value;$('start').disabled=value;$('filePicker').disabled=value;$('folderPicker').disabled=value;$('pipPicker').disabled=value;controls.forEach(e=>e.disabled=value);$('cancel').disabled=!value;compressionControls();show();}
+function show(){const list=$('files');list.replaceChildren();selected.forEach((f,i)=>{const row=document.createElement('div');row.className='file';const name=document.createElement('span');name.textContent=(i+1)+'. '+f.name+' · '+(f.size/1048576).toFixed(1)+' MB';const remove=document.createElement('button');remove.textContent='移除';remove.className='secondary';remove.onclick=()=>{if(!busy){selected.splice(i,1);show();}};const order=document.createElement('span');for(const [label,delta] of [['上移',-1],['下移',1]]){const b=document.createElement('button');b.textContent=label;b.className='secondary';b.disabled=busy||i+delta<0||i+delta>=selected.length;b.onclick=()=>{if(busy)return;[selected[i],selected[i+delta]]=[selected[i+delta],selected[i]];show();};order.append(b);}row.append(name,order,remove);list.append(row);});if(!selected.length)list.textContent='尚未选择视频';}
+function pick(files){if(busy)return;for(const f of files){if(!/\.(mp4|mov|m4v|webm|avi|mkv|ts|mts|m2ts|mpeg|mpg)$/i.test(f.name))continue;if(!selected.some(x=>f.nativePath?x.nativePath===f.nativePath:x.name===f.name&&x.size===f.size&&x.lastModified===f.lastModified))selected.push(f);}show();}
+// Clear the picker after reading it so selecting the same file again still fires `change`.
+$('filePicker').onchange=e=>{pick(e.target.files);e.target.value='';};$('folderPicker').onchange=e=>{pick(e.target.files);e.target.value='';};
+const drop=document.querySelector('.drop');drop.ondragover=e=>{e.preventDefault();drop.classList.add('drag');};drop.ondragleave=()=>drop.classList.remove('drag');drop.ondrop=e=>{e.preventDefault();drop.classList.remove('drag');pick(e.dataTransfer.files);};
+async function api(url,options){const r=await fetch(API+url,{...options,signal:options?.signal||AbortSignal.timeout(30000)});let j;try{j=await r.json();}catch{throw Error('本机返回异常，请检查登录状态');}if(!r.ok){const e=Error(j.error||'请求失败');e.status=r.status;throw e;}return j;}
+function upload(f,index,total){return new Promise((resolve,reject)=>{const x=new XMLHttpRequest();request=x;x.open('POST',API+'/upload?fileName='+encodeURIComponent(f.name));x.upload.onprogress=e=>{if(e.lengthComputable){const p=Math.round(e.loaded/e.total*100);status(`上传 ${index}/${total}：${f.name} · ${p}%`);$('bar').style.width=p+'%';}};x.onload=()=>{request=null;try{const j=JSON.parse(x.responseText);if(x.status!==200)throw Error(j.error||'上传失败');resolve(j.file);}catch(e){reject(e);}};x.onerror=()=>{request=null;reject(Error('上传连接中断，请重试'));};x.onabort=()=>{request=null;reject(Error('上传已取消'));};x.send(f);});}
+function options(){const checked=id=>$(id).checked,num=id=>Number($(id).value);return{hardwareAcceleration:checked('hardwareAcceleration'),keepAudio:checked('keepAudio'),compress:checked('compress'),merge:checked('merge'),mergeUnlimited:checked('mergeUnlimited'),mergeName:$('mergeName').value.trim(),transition:checked('transition'),grid:checked('grid')?num('gridSize'):0,gridOpacity:num('gridOpacity')/100,crop:checked('crop')?num('cropPct'):0,contrast:checked('color')?num('contrast'):1,saturation:checked('color')?num('saturation'):1,sharpen:checked('sharpen'),borderSize:checked('border')?num('borderSize'):0,blackLine:checked('blackLine'),blackLineY:num('blackLineY'),blackLineThickness:num('blackLineThickness'),blackLineOpacity:num('blackLineOpacity')/100,pipOpacity:checked('pip')?num('pipOpacity')/100:0,removeMusic:checked('removeMusic'),reencode:{encoder:$('reencodeEncoder').value,crf:num('reencodeCrf'),preset:$('reencodePreset').value,fps:$('reencodeFps').value,audioBitrate:$('reencodeAudio').value,resolution:$('reencodeResolution').value}};}
+function results(t){
+  $('results').replaceChildren();
+  const hint=document.createElement('p');hint.className='hint';
+  hint.textContent='成品保存成功后立即删除本机副本；原视频上传副本和临时文件在任务结束后自动清理。未保存的成品仅临时保留，'+(t.expiresAt?'剩余保留至 '+new Date(t.expiresAt).toLocaleString()+'。':'');
+  $('results').append(hint);
+  if(t.status==='completed'||t.status==='partial'){
+    const done=document.createElement('p');done.className='hint';done.textContent=`处理完成，共 ${(t.outputs||[]).length} 个成品，${(t.outputs||[]).filter(o=>o.deletedReason==='saved').length} 个已确认保存。`;$('results').append(done);
+  }
+  const remaining=(t.outputs||[]).filter(o=>!o.deletedAt);
+  if(terminal.includes(t.status)&&remaining.length){
+    const retry=document.createElement('button');retry.textContent='选择文件夹并保存剩余成品';retry.disabled=saving;
+    retry.onclick=async()=>{if(saving)return;try{const dir=await window.showDirectoryPicker({mode:'readwrite'});await saveAll(t,dir);}catch(e){status('选择保存文件夹失败：'+e.message);}};
+    $('results').append(retry);
+    for(const o of remaining){const link=document.createElement('a');link.href=API+'/tasks/'+t.id+'/download/'+encodeURIComponent(o.file)+'?consume=1';link.textContent='下载 '+o.name;link.style.display='block';$('results').append(link);}
+  }
+  for(const [i,f] of (t.failures||[]).entries()){const p=document.createElement('p');p.textContent='处理失败：'+(i+1)+'. '+f.name+' · '+f.error;$('results').append(p);}
+  if(t.cleanupError){const p=document.createElement('p');p.textContent='本机清理暂未完成，将自动重试。';$('results').append(p);}
+}
+async function saveAll(t,dir){
+  saving=true;$('start').disabled=true;let count=0,pending=0;
+  const outputs=t.outputs.filter(o=>!o.deletedAt);
+  try{
+    for(const o of outputs){
+      const r=await fetch(API+'/tasks/'+t.id+'/download/'+encodeURIComponent(o.file));
+      if(!r.ok)throw Error('下载失败');
+      const handle=await dir.getFileHandle(o.name,{create:true});
+      const w=await handle.createWritable();
+      try{
+        if(r.body)await r.body.pipeTo(w);
+        else{await w.write(await r.blob());await w.close();}
+      }catch(e){try{await w.abort();}catch{}throw e;}
+      // A closed writable and matching local size are required before acknowledging.
+      const local=await handle.getFile();
+      if(!Number.isSafeInteger(o.outputInfo?.size)||local.size!==o.outputInfo.size)throw Error(o.name+' 保存大小不匹配，本机副本已保留');
+      count++;
+      let ack;
+      for(let attempt=0;attempt<3;attempt++){
+        try{ack=await api('/tasks/'+t.id+'/saved',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({file:o.file,size:local.size})});break;}
+        catch{if(attempt<2)await new Promise(resolve=>setTimeout(resolve,500*(attempt+1)));}
+      }
+      if(ack)Object.assign(o,ack.output);else pending++;
+      results(t);
+      status(`已保存 ${count}/${outputs.length} 个视频`+(pending?'；部分清理通知未送达，本机副本将在到期后清理':'；已通知本机清理副本'));
+    }
+  }catch(e){status(`自动保存失败（已保存 ${count} 个）：${e.message}。未保存的成品仍保留在本机，可重新选择保存文件夹后重试。`);}
+  finally{saving=false;$('start').disabled=busy;results(t);}
+}
+let refreshInFlight=false;
+async function refresh(){if(refreshInFlight)return;refreshInFlight=true;try{await refreshTask();}finally{refreshInFlight=false;}}
+async function refreshTask(){if(!task)return;try{task=(await api('/tasks/'+task.id)).task;const names={queued:'排队中',processing:'处理中',paused:'已暂停',completed:'全部完成',partial:'部分完成',failed:'处理失败',cancelled:'已取消'};status(`${names[task.status]||task.status} · ${videoProgressText(task)}${task.error?' · '+task.error:''}`);$('bar').style.width=videoProgressValue(task)+'%';$('log').textContent=[...(task.logs||[]).slice(-150),...(task.debug||[]).slice(-6)].join('\n');$('pause').disabled=!['processing','paused'].includes(task.status);$('pause').textContent=task.status==='paused'?'继续':'暂停';results(task);if(terminal.includes(task.status)){lock(false);$('pause').disabled=true;try{if(!(task.outputs||[]).some(o=>!o.deletedAt))localStorage.removeItem('video-dedupe-active');}catch{}if(saveDir&&task.outputs?.length){const dir=saveDir;saveDir=null;void saveAll(task,dir);}return;}}catch(e){if(e.status===404){status('任务不存在，请重新提交');lock(false);task=null;try{localStorage.removeItem('video-dedupe-active');}catch{}return;}status(e.message+'；将自动重试');}timer=setTimeout(refresh,1500);}
+ async function startProcessing(){if(busy||saving)return;if(!selected.length){status('请选择输入文件夹');$('folderPicker').click();return;}for(const e of controls){if(!e.disabled&&!e.checkValidity())return e.reportValidity();}if(!window.showDirectoryPicker)return status('无法打开本机文件夹选择器');if($('pip').checked&&!$('pipPicker').files[0])return status('请选择画中画辅助视频');const o=options();if(o.transition){if(!o.merge&&!o.mergeUnlimited)return status('插入过场视频需要选择一种合并方式');if(selected.length<2)return status('请至少选择两个主视频');if(!$('transitionPicker').files[0])return status('请选择过场视频');}try{saveDir=await window.showDirectoryPicker({mode:'readwrite'});}catch{return;}clearTimeout(timer);task=null;stopped=false;lock(true);$('pause').disabled=true;$('results').textContent='正在导入本地视频…';try{if(o.transition)o.transitionStoredName=(await upload($('transitionPicker').files[0],1,1)).storedName;if(stopped)throw Error('上传已取消');if($('pip').checked)o.pipStoredName=(await upload($('pipPicker').files[0],1,1)).storedName;const files=[];for(let i=0;i<selected.length;i++){if(stopped)throw Error('上传已取消');files.push(await upload(selected[i],i+1,selected.length));}if(stopped)throw Error('上传已取消');task=(await api('/tasks',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({files,options:o})})).task;if(stopped)await api('/tasks/'+task.id+'/cancel',{method:'POST'});try{localStorage.setItem('video-dedupe-active',task.id);}catch{}void refresh();}catch(e){status(e.message);lock(false);}}
+ $('start').onclick=startProcessing;
+ $('folderPicker').onchange=e=>{pick(e.target.files);e.target.value='';};
+$('pause').onclick=async()=>{try{await api('/tasks/'+task.id+'/'+(task.status==='paused'?'resume':'pause'),{method:'POST'});clearTimeout(timer);await refresh();}catch(e){status(e.message);}};
+$('cancel').onclick=async()=>{if(!task){stopped=true;request?.abort();return;}try{await api('/tasks/'+task.id+'/cancel',{method:'POST'});clearTimeout(timer);await refresh();}catch(e){status(e.message);}};
+show();try{const id=localStorage.getItem('video-dedupe-active');if(id){task={id};lock(true);void refresh();}}catch{}
+</script><script>// Native macOS adapters. The processing UI and engine retain the original options.
+const native=message=>window.webkit.messageHandlers.native.postMessage(message);
+const refreshStateKey='video-dedupe-refresh-state';
+let refreshedState={};
+try{refreshedState=JSON.parse(sessionStorage.getItem(refreshStateKey)||'{}');sessionStorage.removeItem(refreshStateKey);}catch{}
+if(Array.isArray(refreshedState.selected))selected.push(...refreshedState.selected.filter(f=>typeof f.nativePath==='string'));
+window.showDirectoryPicker=async()=>{const directory=await native({action:'directory'});if(!directory)throw Error('已取消选择');return {directory};};
+for(const [id,folder] of [['filePicker',false],['folderPicker',true],['pipPicker',false],['transitionPicker',false]]){
+ const input=$(id);input.type='button';input.value=folder?'选择视频文件夹…':id==='filePicker'?'选择视频文件…':'选择辅助视频…';
+ let nativeFiles=Array.isArray(refreshedState[id])?refreshedState[id].filter(f=>typeof f.nativePath==='string'):[];if(nativeFiles.length)input.value=nativeFiles[0].name;Object.defineProperty(input,'files',{get:()=>nativeFiles});
+ input.onclick=async()=>{if(busy)return;try{const files=await native({action:'files',folder,multiple:['filePicker','folderPicker'].includes(id)});if(!files?.length)return;if(id==='filePicker'||id==='folderPicker')pick(files);else{nativeFiles=files;input.value=files[0].name;}}catch(e){status(e.message);}};
+}
+let desktopImports=[];
+const browserUpload=upload;
+upload=async(f,index,total)=>{
+ if(!f.nativePath){const imported=await browserUpload(f,index,total);desktopImports.push(imported.storedName);return imported;}
+ status(`导入 ${index}/${total}：${f.name}`);
+ const imported=(await api('/import',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path:f.nativePath}),signal:AbortSignal.timeout(24*3600*1000)})).file;desktopImports.push(imported.storedName);return imported;
+};
+let lastOutputDirectory=refreshedState.lastOutputDirectory||null;
+saveAll=async(t,dir)=>{
+ saving=true;$('start').disabled=true;let count=0;
+ try{const outputs=t.outputs.filter(o=>!o.deletedAt);for(const o of outputs){
+  const result=await api('/tasks/'+t.id+'/export',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({file:o.file,directory:dir.directory}),signal:AbortSignal.timeout(24*3600*1000)});
+  Object.assign(o,result.output);count++;lastOutputDirectory=result.directory||dir.directory;results(t);status(`已保存 ${count}/${outputs.length} 个视频至 ${lastOutputDirectory}`);
+ }}catch(e){status(`保存失败（已保存 ${count} 个）：${e.message}。可以重新选择文件夹保存剩余成品。`);}
+ finally{saving=false;$('start').disabled=busy;results(t);if(!t.outputs.some(o=>!o.deletedAt))localStorage.removeItem('video-dedupe-active');}
+};
+results=t=>{
+ const container=$('results');container.replaceChildren();
+ const outputs=t.outputs||[],remaining=outputs.filter(o=>!o.deletedAt);
+ const text=document.createElement('p');text.className='hint';text.textContent=`成品 ${outputs.length} 个 · 已保存 ${outputs.filter(o=>o.deletedReason==='saved').length} 个。未保存的临时成品保留 24 小时。`;container.append(text);
+ if(terminal.includes(t.status)&&remaining.length){const retry=document.createElement('button');retry.textContent='选择文件夹并保存剩余成品';retry.disabled=saving;retry.onclick=async()=>{try{await saveAll(t,await window.showDirectoryPicker());}catch(e){status(e.message);}};container.append(retry);}
+ if(lastOutputDirectory){const reveal=document.createElement('button');reveal.className='secondary';reveal.textContent='在 Finder 中打开';reveal.onclick=()=>native({action:'reveal',path:lastOutputDirectory});container.append(reveal);}
+ for(const o of outputs){const row=document.createElement('p');row.textContent=o.name+' · '+(o.deletedReason==='saved'?'已保存':o.deletedAt?'临时文件已清理':'等待保存');container.append(row);}
+ for(const f of t.failures||[]){const row=document.createElement('p');row.textContent='处理失败：'+f.name+' · '+f.error;container.append(row);}
+};
+// Remove retired settings so old preferences cannot re-enable these operations.
+try{const settings=JSON.parse(localStorage.getItem(KEY)||'{}');for(const key of ['trim','trimStart','trimEnd','mirror'])delete settings[key];localStorage.setItem(KEY,JSON.stringify(settings));}catch{}
+// Persist settings independently of the random local service port.
+const storedSet=Storage.prototype.setItem,storedRemove=Storage.prototype.removeItem;
+Storage.prototype.setItem=function(key,value){storedSet.call(this,key,value);if(this===localStorage&&[KEY,'video-dedupe-active'].includes(key))void native({action:'persist',key,value:String(value)});};
+Storage.prototype.removeItem=function(key){storedRemove.call(this,key);if(this===localStorage&&[KEY,'video-dedupe-active'].includes(key))void native({action:'persist',key,value:null});};
+try{localStorage.setItem(KEY,localStorage.getItem(KEY)||'{}');}catch{}
+api('/capabilities').then(c=>{if(!c.demucs){$('removeMusic').checked=false;$('removeMusic').disabled=true;$('removeMusic').parentElement.parentElement.querySelector('.hint').textContent='可选功能：需在此 Mac 安装 Demucs 与人声分离模型。';}}).catch(e=>status(e.message));
+
+const desktopStart=startProcessing;
+startProcessing=async()=>{desktopImports=[];await desktopStart();if(!task&&desktopImports.length)try{await api('/discard-imports',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({names:desktopImports})});}catch{}};
+$('start').onclick=startProcessing;
+
+async function refreshUI(){
+ const button=$('refreshUI');if(button.disabled)return;button.disabled=true;
+ try{
+  if(saving){status('正在保存视频，已保留当前进度…');return;}
+  if(busy){if(task){clearTimeout(timer);await refresh();}else status('正在导入视频，请稍候…');return;}
+  if(selected.some(f=>!f.nativePath)){show();status('文件列表已刷新，已保留导入的视频。');return;}
+  localStorage.setItem(KEY,JSON.stringify({...JSON.parse(localStorage.getItem(KEY)||'{}'),...Object.fromEntries(controls.filter(e=>!['file','button'].includes(e.type)).map(e=>[e.id,e.type==='checkbox'?e.checked:e.value])),speedDefaultsVersion:1}));
+  sessionStorage.setItem(refreshStateKey,JSON.stringify({selected,pipPicker:[...$('pipPicker').files],transitionPicker:[...$('transitionPicker').files],lastOutputDirectory,taskId:task?.id}));
+  await native({action:'persist',key:KEY,value:localStorage.getItem(KEY)||'{}'});
+  window.location.reload();
+ }catch(e){status('刷新失败：'+e.message);}
+ finally{button.disabled=false;}
+}
+$('refreshUI').onclick=refreshUI;
+document.addEventListener('keydown',e=>{if(e.metaKey&&e.key.toLowerCase()==='r'){e.preventDefault();void refreshUI();}});
+show();
+if(!task&&refreshedState.taskId){task={id:refreshedState.taskId};lock(true);void refresh();}
+
+// Always consult the engine before deciding whether quitting will interrupt work.
+async function desktopQuitState(){
+ const state=await api('/auto-queue');
+ return{processing:!!(busy||saving||state.active),watching:!!state.enabled,pending:(state.counts?.waiting||0)+(state.counts?.stabilizing||0)};
+}
+</script><script>const autoRows=new Map(),autoDraftKey='video-dedupe-auto-drafts';
+let autoRequestPending=false,autoPollTimer=null,autoPollInFlight=false,autoRevision=0,autoLastState={groups:[],counts:{}},autoNameCounter=0,autoGlobalError='';
+window.autoRunActive=false;
+const autoNames={waiting:'等待处理',queued:'排队中',processing:'处理中',saving:'正在保存',completed:'已保存',failed:'处理失败',save_failed:'保存失败',interrupted:'上次中断',changed:'文件已变化'};
+function autoMessage(message){$('autoStatus').textContent=message;}
+function autoFailure(row,error){
+ const message=error?.message||String(error);if(row)row.error=message;
+ autoGlobalError=(row?row.name+'：':'')+message;
+}
+function showAutoFeedback(){
+ const target=$('autoStatus');target.setAttribute('tabindex','-1');target.scrollIntoView({block:'center',behavior:'smooth'});target.focus({preventScroll:true});
+}
+function storeAutoDrafts(){try{sessionStorage.setItem(autoDraftKey,JSON.stringify([...autoRows.values()].filter(r=>r.draft).map(r=>({name:r.name,inputDirectory:r.inputDirectory,outputDirectory:r.outputDirectory,settleSeconds:r.settleSeconds,autoStop:r.autoStop}))));}catch{}}
+function autoButton(label,action,secondary=true){const b=document.createElement('button');b.type='button';b.textContent=label;if(secondary)b.className='secondary';b.onclick=action;return b;}
+function createAutoRow(value={}){
+ const row={id:value.id||'draft-'+Math.random().toString(36).slice(2),draft:!value.id,name:value.name||'任务 '+ ++autoNameCounter,inputDirectory:value.inputDirectory||value.config?.inputDirectory||null,outputDirectory:value.outputDirectory||value.config?.outputDirectory||null,settleSeconds:value.settleSeconds??value.config?.settleSeconds??10,autoStop:value.autoStop??value.config?.autoStop??true,state:value.id?value:null,error:'',dirty:false};
+ const n=Number(row.name.match(/任务\s*(\d+)/)?.[1]);if(Number.isFinite(n))autoNameCounter=Math.max(autoNameCounter,n);
+ const node=document.createElement('section');node.className='watch-task';row.node=node;
+ const header=document.createElement('div');header.className='watch-head';const title=document.createElement('h3');title.textContent=row.name;row.title=title;
+ row.remove=autoButton('移除',()=>autoAction('remove',row));header.append(title,row.remove);node.append(header);
+ const grid=document.createElement('div');grid.className='grid';
+ for(const [kind,label] of [['input','监听文件夹'],['output','保存路径']]){const cell=document.createElement('div');row[kind+'Button']=autoButton('选择'+label,()=>chooseAutoDirectory(row,kind));row[kind+'Path']=document.createElement('p');row[kind+'Path'].className='hint';row[kind+'Path'].style.overflowWrap='anywhere';cell.append(row[kind+'Button'],row[kind+'Path']);grid.append(cell);}
+ const wait=document.createElement('label');wait.append('文件连续 ');row.settle=document.createElement('input');Object.assign(row.settle,{type:'number',min:'3',max:'600',value:String(row.settleSeconds)});wait.append(row.settle,' 秒未变化后入队');row.settle.onchange=()=>{if(!row.settle.checkValidity())return row.settle.reportValidity();row.settleSeconds=Number(row.settle.value);row.dirty=true;void autoAction('save',row);};grid.append(wait);const finishLabel=document.createElement('label');row.finishToggle=document.createElement('input');row.finishToggle.type='checkbox';row.finishToggle.checked=row.autoStop;row.finishToggle.onchange=()=>{row.autoStop=row.finishToggle.checked;row.dirty=true;void autoAction('save',row);};finishLabel.append(row.finishToggle,' 完成后自动停止');grid.append(finishLabel);node.append(grid);
+ const actions=document.createElement('div');actions.className='actions';row.start=autoButton('开始此任务',()=>autoAction('start',row),false);row.stop=autoButton('停止此任务',()=>autoAction('stop',row));row.stop.className='warn';row.retry=autoButton('失败重新入队',()=>autoAction('retry',row));row.reveal=autoButton('打开输出文件夹',()=>native({action:'reveal',path:row.outputDirectory}));actions.append(row.start,row.stop,row.retry,row.reveal);node.append(actions);
+ row.status=document.createElement('p');row.status.className='hint';row.status.setAttribute('role','status');node.append(row.status);
+ row.settings=document.createElement('p');row.settings.className='hint';node.append(row.settings);
+ row.redo=autoButton('重做全部（保留原成品）',()=>autoAction('reset',row));actions.append(row.redo);
+ const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent='处理记录';row.history=document.createElement('div');row.history.style.cssText='max-height:180px;overflow:auto';details.append(summary,row.history);node.append(details);
+ autoRows.set(row.id,row);$('autoGroups').append(node);updateAutoRow(row);return row;
+}
+function updateAutoRow(row){
+ if(row.inputDirectory){row.name=row.inputDirectory.split('/').filter(Boolean).at(-1)||'来源文件夹';row.title.textContent=row.name;row.title.style.overflowWrap='anywhere';}
+ const s=row.state,c=s?.counts||{waiting:0,completed:0,failed:0,retryable:0},locked=autoRequestPending||s?.enabled||!!s?.active;
+ row.inputPath.textContent=row.inputDirectory||'尚未选择监听文件夹';row.outputPath.textContent=row.outputDirectory ? row.outputDirectory+'（自动创建同名文件夹）' : '尚未选择保存路径';
+ row.inputButton.disabled=locked;row.outputButton.disabled=locked;row.settle.disabled=locked;row.remove.disabled=locked;row.finishToggle.disabled=!!locked;row.finishToggle.checked=row.autoStop;
+ if(document.activeElement!==row.settle)row.settle.value=row.settleSeconds;
+ row.redo.disabled=!!locked||row.draft;
+ const effective=s?.config?.options;row.settings.textContent=effective?((s.enabled||s.active?'本次参数：':'上次参数：')+(effective.mergeUnlimited?'完整合并':effective.merge?'分集合并（约50分钟）':'逐个处理')+' · 视频压缩'+(effective.compress?'开启':'关闭')+' · '+(effective.compress?'H.265':effective.reencode?.encoder||'H.264')+' · '+(effective.hardwareAcceleration?'Apple硬件编码':'软件编码')+' · '+(s.config.autoStop!==false?'完成后自动停止':'持续监听')+((effective.merge||effective.mergeUnlimited)?' · 合并名称：'+effective.mergeName:'')):'启动时采用上方勾选的合并、压缩和其他处理参数';
+ row.start.disabled=!!locked;row.stop.disabled=autoRequestPending||!s?.enabled;row.retry.disabled=locked||!c.retryable;row.reveal.disabled=!row.outputDirectory;
+ row.status.style.color=row.error||s?.lastError?'#b91c1c':'';
+ row.start.textContent=autoRequestPending?'请稍候…':s?.enabled?'运行中':!row.inputDirectory||!row.outputDirectory?'选择文件夹并开始':'开始此任务';
+ row.status.textContent=(s?.enabled?(s.active?'正在处理':s.config?.autoStop!==false?'正在检查和排队':'正在监听'):s?.active?'已停止接收，正在完成当前视频':s?.stopReason==='completed'?'处理完成，已自动停止':s?.stopReason==='finished_with_errors'?'处理结束，有失败视频，已自动停止':s?.stopReason==='empty'?'无待处理视频，已自动停止':row.draft?'请分别选择两个文件夹':'已停止')+` · 等待 ${c.waiting} · 已处理 ${c.completed} · 成品 ${c.outputs||0} · 失败/中断 ${c.failed}`+(c.stabilizing?` · 等待稳定 ${c.stabilizing}`:'')+(s?.active?` · ${s.active.name} · ${videoProgressText(s.active)}`:'')+(s?.lastError?' · '+s.lastError:'')+(row.error?' · '+row.error:'');
+ row.history.replaceChildren();for(const e of s?.entries||[]){const item=document.createElement('div');item.className='file';const name=document.createElement('span'),detail=document.createElement('span');name.textContent=e.name;detail.textContent=(autoNames[e.status]||e.status)+(e.error?'：'+e.error:'');item.append(name,detail);row.history.append(item);}if(!s?.entries?.length)row.history.textContent='此任务暂无处理记录。';
+}
+function renderAutoQueue(state){
+ autoLastState=state;window.autoRunActive=!!(state.enabled||state.active);
+ const ids=new Set((state.groups||[]).map(g=>g.id));
+ for(const row of [...autoRows.values()])if(!row.draft&&!ids.has(row.id)){row.node.remove();autoRows.delete(row.id);}
+ for(const group of state.groups||[]){let row=autoRows.get(group.id);if(!row)row=createAutoRow(group);row.state=group;row.name=group.name;row.title.textContent=group.name;if(!row.dirty){row.inputDirectory=group.config.inputDirectory;row.outputDirectory=group.config.outputDirectory;row.settleSeconds=group.config.settleSeconds;row.autoStop=group.config.autoStop!==false;}}
+ for(const row of autoRows.values())updateAutoRow(row);
+ $('autoAddGroup').disabled=autoRequestPending;$('autoStartAll').disabled=autoRequestPending||![...autoRows.values()].some(r=>!r.state?.enabled&&!r.state?.active);$('autoStopAll').disabled=autoRequestPending||!state.enabled;
+ $('autoStatus').style.color=autoGlobalError?'#b91c1c':'';$('autoStatus').setAttribute('role',autoGlobalError?'alert':'status');
+ const c=state.counts||{};autoMessage(`已配置 ${(state.groups||[]).length} 个任务 · 正在监听 ${(state.groups||[]).filter(g=>g.enabled).length} 个 · 等待 ${c.waiting||0} · 已处理 ${c.completed||0} · 成品 ${c.outputs||0} · 失败/中断 ${c.failed||0}`+(autoGlobalError?' · '+autoGlobalError:''));
+}
+async function pollAutoQueue(){if(autoPollInFlight||autoRequestPending)return;autoPollInFlight=true;const revision=autoRevision;try{const state=await api('/auto-queue');if(revision===autoRevision)renderAutoQueue(state);}catch(e){autoMessage('状态读取失败：'+e.message);}finally{autoPollInFlight=false;clearTimeout(autoPollTimer);autoPollTimer=setTimeout(pollAutoQueue,2000);}}
+async function persistAutoRow(row){
+ if(!row.inputDirectory||!row.outputDirectory){storeAutoDrafts();return;}
+ const value={name:row.name,inputDirectory:row.inputDirectory,outputDirectory:row.outputDirectory,settleSeconds:row.settleSeconds,autoStop:row.autoStop};
+ const result=await api('/auto-queue/groups'+(row.draft?'':'/update'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...value,...(row.draft?{}:{id:row.id})})});
+ if(row.draft){autoRows.delete(row.id);row.id=result.createdId;row.draft=false;autoRows.set(row.id,row);}row.dirty=false;storeAutoDrafts();renderAutoQueue(result);
+}
+async function chooseAutoDirectory(row,kind){
+ if(autoRequestPending)return;autoRequestPending=true;autoRevision++;row.error='';autoGlobalError='';for(const r of autoRows.values())updateAutoRow(r);
+ try{const input=kind==='input',value=await native({action:'directory',prompt:input?'选择此任务的监听文件夹':'选择此任务的输出文件夹',message:row.name+'：'+(input?'此文件夹中的视频归属于这一组任务。':'这一组任务的成品只保存到此文件夹。')});if(value){row[kind+'Directory']=value;row.dirty=true;await persistAutoRow(row);}}
+ catch(e){autoFailure(row,e);}finally{autoRequestPending=false;autoRevision++;renderAutoQueue(autoLastState);storeAutoDrafts();if(autoGlobalError)showAutoFeedback();void pollAutoQueue();}
+}
+function autoProcessingOptions(){
+ if(busy||saving)throw Error('请等待手动任务完成后再启动自动任务');
+ for(const control of controls)if(!control.disabled&&!['file','button'].includes(control.type)&&!control.checkValidity()){control.reportValidity();throw Error('请检查上方处理参数');}
+ const o=options();if(o.merge&&o.mergeUnlimited)throw Error('请选择一种合并方式');if(o.transition&&!o.merge&&!o.mergeUnlimited)throw Error('过场视频需要勾选一种合并方式');
+ const pipPath=$('pipPicker').files[0]?.nativePath;if(o.pipOpacity>0&&!pipPath)throw Error('请先选择本机画中画辅助视频');const transitionPath=$('transitionPicker').files[0]?.nativePath;if(o.transition&&!transitionPath)throw Error('请先选择本机过场视频');return{options:o,pipPath,transitionPath};
+}
+async function startAutoRow(row,settings,chooseMissing=false){
+ if(chooseMissing)for(const kind of ['input','output'])if(!row[kind+'Directory']){
+  const input=kind==='input',value=await native({action:'directory',prompt:input?'选择监听文件夹':'选择保存路径',message:row.name+'：'+(input?'请选择需要自动处理的视频文件夹。':'请选择保存位置，系统会自动创建以视频名或合并来源名命名的子文件夹。')});
+  if(!value)throw Error('已取消选择'+(input?'监听文件夹':'输出文件夹')+'，任务尚未启动');
+  row[kind+'Directory']=value;row.dirty=true;storeAutoDrafts();updateAutoRow(row);
+ }
+ if(!row.inputDirectory||!row.outputDirectory)throw Error('请先选择'+(!row.inputDirectory&&!row.outputDirectory?'监听文件夹和输出文件夹':!row.inputDirectory?'监听文件夹':'输出文件夹')+'，添加空白任务后需要分别选择两个文件夹');
+ row.settleSeconds=Number(row.settle.value);
+ if(!Number.isFinite(row.settleSeconds)||row.settleSeconds<3||row.settleSeconds>600)throw Error('文件稳定时间需为 3–600 秒');
+ if(row.draft||row.dirty)await persistAutoRow(row);
+ const result=await api('/auto-queue/start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:row.id,inputDirectory:row.inputDirectory,outputDirectory:row.outputDirectory,settleSeconds:row.settleSeconds,autoStop:row.autoStop,...settings})});row.dirty=false;renderAutoQueue(result);
+}
+async function autoAction(action,row){
+ if(autoRequestPending)return;autoRequestPending=true;autoRevision++;autoGlobalError='';if(row)row.error='';renderAutoQueue(autoLastState);
+ try{
+  if(action==='save')await persistAutoRow(row);
+  else if(action==='start')await startAutoRow(row,autoProcessingOptions(),true);
+  else if(action==='startAll'){const settings=autoProcessingOptions();for(const r of [...autoRows.values()])if(!r.state?.enabled&&!r.state?.active){try{r.error='';await startAutoRow(r,settings);}catch(e){autoFailure(r,e);}}}
+  else if(action==='remove'&&row.draft){row.node.remove();autoRows.delete(row.id);storeAutoDrafts();}
+  else{const route=action==='remove'?'/auto-queue/groups/remove':'/auto-queue/'+(action==='stopAll'?'stop':action);const result=await api(route,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(row?{id:row.id}:{})});renderAutoQueue(result);}
+ }catch(e){autoFailure(row,e);}
+ finally{autoRequestPending=false;autoRevision++;renderAutoQueue(autoLastState);storeAutoDrafts();if(autoGlobalError)showAutoFeedback();void pollAutoQueue();}
+}
+$('autoAddGroup').onclick=()=>{createAutoRow();storeAutoDrafts();renderAutoQueue(autoLastState);};
+$('autoStartAll').onclick=()=>autoAction('startAll');$('autoStopAll').onclick=()=>autoAction('stopAll');
+$('openAutoQueue').onclick=()=>$('autoQueuePanel').scrollIntoView({behavior:'smooth',block:'start'});
+(async()=>{try{const state=await api('/auto-queue');renderAutoQueue(state);try{for(const draft of JSON.parse(sessionStorage.getItem(autoDraftKey)||'[]'))createAutoRow(draft);}catch{}if(!autoRows.size)createAutoRow();renderAutoQueue(state);}catch(e){autoMessage(e.message);if(!autoRows.size)createAutoRow();}finally{void pollAutoQueue();}})();
+</script></body></html>

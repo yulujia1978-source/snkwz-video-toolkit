@@ -1,0 +1,46 @@
+const {test}=require('node:test'),assert=require('node:assert/strict');
+const fs=require('node:fs'),fsp=fs.promises,os=require('node:os'),path=require('node:path');
+const {spawn,execFileSync}=require('node:child_process'),{createHash}=require('node:crypto');
+const app=path.join(__dirname,'../dist/视频去重.app/Contents/Resources');
+test('desktop auth, local import, direct source, fast remux, collision-safe export and cleanup',async()=>{
+ const temp=await fsp.mkdtemp(path.join(os.tmpdir(),'vd-desktop-')),root=path.join(temp,'data'),output=path.join(temp,'exports');await fsp.mkdir(output);
+ const src=path.join(temp,"原视频 ' 空格.mp4");
+ execFileSync(path.join(app,'bin/ffmpeg'),['-v','error','-f','lavfi','-i','testsrc2=size=320x240:rate=15:duration=3','-f','lavfi','-i','sine=frequency=440:duration=3','-c:v','libx264','-c:a','aac',src]);
+ const hash=()=>createHash('sha256').update(fs.readFileSync(src)).digest('hex'),before=hash();
+ const child=spawn(path.join(app,'bin/node'),[path.join(app,'server.cjs')],{env:{...process.env,VD_DATA_ROOT:root,VD_TOKEN:'test-token',VD_TOOLS:path.join(app,'bin')},stdio:['pipe','pipe','pipe']});
+ let stderr='';child.stderr.on('data',d=>stderr+=d);
+ try{
+  const port=await new Promise((resolve,reject)=>{let text='';child.stdout.on('data',d=>{text+=d;if(text.includes('\n'))resolve(JSON.parse(text.trim()).port);});child.on('exit',code=>reject(Error('server exit '+code+stderr)));});
+  const origin=`http://127.0.0.1:${port}`,api=origin+'/api/admin/video-dedupe';
+  const request=async(url,body)=>{const res=await fetch(api+url,{method:body?'POST':'GET',headers:{'X-Desktop-Token':'test-token','Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});const data=await res.json();assert.equal(res.status,200,JSON.stringify(data));return data;};
+  assert.equal((await fetch(api+'/capabilities')).status,403);
+  assert.equal((await fetch(origin+'/video-dedupe.html')).status,403);
+  assert.equal((await fetch(origin+'/video-dedupe.html?token=test-token')).status,200);
+  assert.equal((await fetch(api+'/capabilities',{headers:{'X-Desktop-Token':'test-token',Origin:'https://example.com'}})).status,403);
+  const discarded=(await request('/import',{path:src})).file;await request('/discard-imports',{names:[discarded.storedName,'../../important']});assert.equal(fs.existsSync(path.join(root,'uploads',discarded.storedName)),false);
+  const file=(await request('/import',{path:src})).file;assert.equal(fs.existsSync(path.join(root,'uploads',file.storedName)),false,'native source must be read directly without staging a copy');
+  const {task}=await request('/tasks',{files:[file],options:{trim:true,trimStart:.2,trimEnd:.3,mirror:true,hardwareAcceleration:true,reencode:{preset:'ultrafast'}}});
+  let t;const deadline=Date.now()+30000;
+  do{t=(await request('/tasks/'+task.id)).task;if(['completed','failed'].includes(t.status))break;await new Promise(r=>setTimeout(r,100));}while(Date.now()<deadline);
+  assert.equal(t.status,'completed',JSON.stringify(t));assert.equal(t.outputs.length,1);assert.equal(t.options.trim,false);assert.equal(t.options.mirror,false);
+  assert.ok(t.logs.some(line=>line.includes('跳过视频编码')));
+  const out=t.outputs[0];assert.ok(Math.abs(out.outputInfo.duration-3)<.2);
+  const namedOutput=path.join(output,path.parse(src).name);await fsp.mkdir(namedOutput);
+  await fsp.writeFile(path.join(namedOutput,out.name),'existing user file');
+  const failed=await fetch(api+'/tasks/'+t.id+'/export',{method:'POST',headers:{'X-Desktop-Token':'test-token','Content-Type':'application/json'},body:JSON.stringify({file:out.file,directory:path.join(temp,'missing')})});assert.equal(failed.status,400);assert.ok(fs.existsSync(path.join(root,'outputs',t.id,out.file)));
+  const saved=await request('/tasks/'+t.id+'/export',{file:out.file,directory:output});
+  assert.equal(saved.directory,await fsp.realpath(namedOutput));assert.notEqual(saved.path,path.join(namedOutput,out.name));assert.equal(await fsp.readFile(path.join(namedOutput,out.name),'utf8'),'existing user file');
+  assert.equal((await fsp.stat(saved.path)).size,out.outputInfo.size);assert.equal(saved.output.deletedReason,'saved');assert.equal(hash(),before);
+  assert.equal(fs.existsSync(path.join(root,'uploads',file.storedName)),false);
+  assert.equal(fs.existsSync(path.join(root,'outputs',t.id,out.file)),false);
+  const packets=(file,stream)=>JSON.parse(execFileSync(path.join(app,'bin/ffprobe'),['-v','error','-select_streams',stream,'-show_packets','-show_data_hash','sha256','-show_entries','packet=data_hash','-of','json',file])).packets.map(p=>p.data_hash);
+  assert.deepEqual(packets(saved.path,'v:0'),packets(src,'v:0'),'unchanged video must retain every encoded packet');
+  assert.deepEqual(packets(saved.path,'a:0'),packets(src,'a:0'),'keep-audio must avoid audio re-encoding');
+  const f1=(await request('/import',{path:src})).file,f2=(await request('/import',{path:src})).file;
+  const merged=(await request('/tasks',{files:[f1,f2],options:{mergeUnlimited:true,keepAudio:false}})).task;
+  let m;const mergeDeadline=Date.now()+30000;
+  do{m=(await request('/tasks/'+merged.id)).task;if(['completed','failed'].includes(m.status))break;await new Promise(r=>setTimeout(r,100));}while(Date.now()<mergeDeadline);
+  assert.equal(m.status,'completed',JSON.stringify(m));assert.ok(Math.abs(m.outputs[0].outputInfo.duration-6)<.2);const mergedInfo=JSON.parse(execFileSync(path.join(app,'bin/ffprobe'),['-v','error','-show_streams','-of','json',path.join(root,'outputs',m.id,m.outputs[0].file)]));assert.equal(mergedInfo.streams.find(s=>s.codec_type==='audio').sample_rate,'48000');assert.equal(hash(),before,'native concat and cleanup must not alter the source with quotes in its name');
+  const meta=JSON.parse(execFileSync(path.join(app,'bin/ffprobe'),['-v','error','-show_streams','-of','json',saved.path]));assert.equal(meta.streams[0].width,320);assert.ok(meta.streams.some(s=>s.codec_type==='audio'));
+ }finally{child.stdin.end();await new Promise(resolve=>child.once('exit',resolve));await fsp.rm(temp,{recursive:true,force:true});}
+});
